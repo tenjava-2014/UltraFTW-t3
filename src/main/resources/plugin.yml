@@ -1,0 +1,3 @@
+name: UltraFTW-t3
+main: com.tenjava.entries.UltraFTW.t3.TenJava
+version: '${project.version}'

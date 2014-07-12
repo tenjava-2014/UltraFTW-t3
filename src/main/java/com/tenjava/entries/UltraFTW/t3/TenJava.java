@@ -1,9 +1,10 @@
 package com.tenjava.entries.UltraFTW.t3;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -24,15 +25,16 @@ public class TenJava extends JavaPlugin implements Listener
     int secsPerMin = 60;
 
     @Override
-    public void onEnable()
+    public void onEnable() // when the plugin first starts
     {
-        getLogger().info(startMessage + "enabled!");
+        getLogger().info(startMessage + "enabled!"); // tell the server owner a nice message
+        getServer().getPluginManager().registerEvents(this, this); // register this as listener
     }
 
     @Override
     public void onDisable()
     {
-        getLogger().info(startMessage + "enabled!");
+        getLogger().info(startMessage + "disabled!"); // say goodbye!
     }
 
     @EventHandler
@@ -41,41 +43,52 @@ public class TenJava extends JavaPlugin implements Listener
         players.add(event.getPlayer().getUniqueId());
         JavaPlugin plugin = this;
 
-        // will
+        // will run after a random amount of time, and will affect a random player
         new BukkitRunnable()
         {
             @Override
             public void run()
             {
                 // do cool stuff
+                UUID player = pickPlayer();
+                if (Bukkit.getPlayer(player) == null)
+                    players.remove(player);
             }
         }.runTaskLater(this, pickTime());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event)
+    {
+        // stuff, but I gotta commit first
     }
 
     public int pickTime()
     {
         Random random = new Random();
-        int randTime = random.nextInt();
 
         int ticksPerMin = secsPerMin*ticksPerSec;
 
-        int min = 3*ticksPerMin;
-        int max = 25*ticksPerMin;
+        return randomInt(3*ticksPerMin, 25*ticksPerMin, true);
+    }
 
-        return new Random().nextInt(max - min + 1) + min;
+    private int randomInt(int min, int max, boolean inclusive)
+    {
+        Random random = new Random();
+        int include = 0; // cheesy way of making inclusive work with least amount of code
+
+        if (inclusive)
+            include = 1;
+
+        return new Random().nextInt(max - min + include) + min;
     }
 
     public UUID pickPlayer()
     {
-        /*for (UUID player : players)
-        {
-
-        }*/
-
-        return null; // only temporarily so I can commit/push this
+        return players.get(randomInt(0, players.size(), false)); // pick player using randomInt and the players list
     }
 
-    public static Action randomAction()
+    public static Action pickAction()
     {
         List<Action> actions = Collections.unmodifiableList(Arrays.asList(com.tenjava.entries.UltraFTW.t3.Action.values()));
         Random rand = new Random();

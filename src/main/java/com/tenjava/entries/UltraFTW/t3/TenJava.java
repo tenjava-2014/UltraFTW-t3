@@ -27,6 +27,9 @@ public class TenJava extends JavaPlugin implements Listener
     // amount of seconds per minute
     int secsPerMin = 60;
 
+    // the current poor guy getting... whatever, you know what I mean
+    UUID currentVictim;
+
     @Override
     public void onEnable() // when the plugin first starts
     {
@@ -52,10 +55,7 @@ public class TenJava extends JavaPlugin implements Listener
             @Override
             public void run()
             {
-                // do cool stuff
-                Player player = Bukkit.getPlayer(pickPlayer());
-                Action action = pickAction();
-
+                doAction(pickAction(), Bukkit.getPlayer(pickPlayer())); // run the action
             }
         }.runTaskLater(this, pickTime()); // run the action on the player after a random amount of time
     }
@@ -63,7 +63,13 @@ public class TenJava extends JavaPlugin implements Listener
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        // will run when player changes yaw
+        BlockFace direction = getDirection(event.getPlayer().getLocation().getYaw());
+        BlockFace opposite = getOppositeDirection(direction);
+
+        if (event.getPlayer().getUniqueId().equals(currentVictim) && getDirection(event.getPlayer().getLocation().getYaw()).equals(opposite))
+        {
+            // spawn creeper if on certain action
+        }
     }
 
     @EventHandler
@@ -93,7 +99,9 @@ public class TenJava extends JavaPlugin implements Listener
 
     public UUID pickPlayer()
     {
-        return players.get(randomInt(0, players.size(), false)); // pick player using randomInt and the players list
+        UUID player = players.get(randomInt(0, players.size(), false));  // pick player using randomInt and the players list
+        currentVictim = player;
+        return player;
     }
 
     public static Action pickAction()
@@ -103,7 +111,7 @@ public class TenJava extends JavaPlugin implements Listener
         return actions.get(rand.nextInt(actions.size()));
     }
 
-    public void doAction(Action action, Player player)
+    public void doAction(Action action, Player player) // run a given action on a given player
     {
         switch (action)
         {
@@ -113,10 +121,40 @@ public class TenJava extends JavaPlugin implements Listener
                     BlockFace.NORTH,
                     BlockFace.EAST,
                     BlockFace.SOUTH,
-                    BlockFace.WEST,
+                    BlockFace.WEST
                 };
                 BlockFace direction = directions[Math.round(player.getLocation().getYaw()) & 0x3]; // calculate direction
                 break;
         }
+    }
+
+    private BlockFace getOppositeDirection(BlockFace direction)
+    {
+        switch (direction)
+        {
+            case NORTH:
+                return BlockFace.SOUTH;
+            case SOUTH:
+                return BlockFace.NORTH;
+            case EAST:
+                return BlockFace.WEST;
+            case WEST:
+                return BlockFace.EAST;
+
+        }
+        return null;
+    }
+
+    private BlockFace getDirection(float yaw)
+    {
+        BlockFace[] directions = // possible direction
+        {
+           BlockFace.NORTH,
+           BlockFace.EAST,
+           BlockFace.SOUTH,
+           BlockFace.WEST
+        };
+
+        return directions[Math.round(yaw) & 0x3];
     }
 }

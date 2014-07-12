@@ -68,13 +68,10 @@ public class TenJava extends JavaPlugin implements Listener
     {
         if (cmd.getName().equalsIgnoreCase("lor") || cmd.getName().equalsIgnoreCase("lackofrepitition"))
         {
-            tell(Bukkit.getPlayer("ultralord_rulz"), "args.length = " + args.length);
-            tell(Bukkit.getPlayer("ultralord_rulz"), "args[0]" + args[0]);
-
             if (args.length == 2)
             {
-                // coming up next
-
+                if (Bukkit.getPlayer(args[0]) != null)
+                    doAction(getAction(args[1]), Bukkit.getPlayer(args[0]));
             }
 
             else if (args.length == 1)
@@ -142,10 +139,8 @@ public class TenJava extends JavaPlugin implements Listener
 
     public void doAction(Action action, Player player) // run a given action on a given player
     {
-        tell(Bukkit.getPlayer("ultralord_rulz"), action.toString());
-        tell(Bukkit.getPlayer("ultralord_rulz"), player.toString());
-
         currentVictim = player;
+        if (action != null)
         switch (action)
         {
             /*case CREEP_SCARE:
@@ -249,7 +244,6 @@ public class TenJava extends JavaPlugin implements Listener
     public Action getAction(String msg)
     {
         // I hate Java's switch statement
-        tell(Bukkit.getPlayer("ultralord_rulz"), "getAction" + msg);
 
         if (msg.equalsIgnoreCase("lightning") || msg.equalsIgnoreCase("storm"))
             return Action.LIGHTNING;

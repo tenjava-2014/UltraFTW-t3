@@ -5,12 +5,9 @@ UltraFTW's ten.java submission
 
 This is a submission for the 2014 ten.java contest.
 
-- __Theme:__
+- __Theme:__ What random events can occur in Minecraft?
 - __Time:__ Time 3 (7/12/2014 14:00 to 7/13/2014 00:00 UTC)
 - __MC Version:__ 1.7.9 (latest Bukkit beta)
-- __Stream URL:__ https://twitch.tv/UltraTechStream
-
-<!-- put chosen theme above -->
 
 ---------------------------------------
 
@@ -28,8 +25,5 @@ Maven will download all required dependencies and build a ready-for-use plugin p
 Usage
 -----
 
-1. Install plugin
-2. Do things with it
-
-<!-- Hi, UltraFTW! This is the default README for every ten.java submission. -->
-<!-- We encourage you to edit this README with some information about your submission – keep in mind you'll be scored on documentation! -->
+1. Drop the .jar in your /plugins/ folder.
+2. Play as your normally would, but be worried. Things are not what they seem.

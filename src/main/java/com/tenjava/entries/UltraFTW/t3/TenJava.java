@@ -28,7 +28,7 @@ public class TenJava extends JavaPlugin implements Listener
     int secsPerMin = 60;
 
     // the current poor guy getting... whatever, you know what I mean
-    UUID currentVictim;
+    Player currentVictim;
 
     @Override
     public void onEnable() // when the plugin first starts
@@ -79,26 +79,24 @@ public class TenJava extends JavaPlugin implements Listener
         return false;
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onPlayerMove(PlayerMoveEvent event)
     {
-        BlockFace direction = getDirection(event.getPlayer().getLocation().getYaw());
-        BlockFace opposite = getOppositeDirection(direction);
+        BlockFace direction = getDirection(event.getFrom().getYaw());
+        BlockFace toCheck = getDirection(event.getTo().getYaw());
 
         tell(event.getPlayer(), direction.toString());
-        tell(event.getPlayer(), opposite.toString());
         tell(event.getPlayer(), event.getPlayer().getUniqueId().toString());
         tell(event.getPlayer(), currentVictim.toString());
 
 
 
-
-        if (event.getPlayer().getUniqueId().equals(currentVictim) && direction.equals(opposite))
+        if (event.getPlayer().getUniqueId().equals(currentVictim) && checkDirection(direction, toCheck))
         {
             // spawn creeper if on certain action
             tell(event.getPlayer(), "hello");
         }
-    }
+    }*/
 
     public int pickTime()
     {
@@ -123,7 +121,7 @@ public class TenJava extends JavaPlugin implements Listener
     {
         Player[] players = Bukkit.getOnlinePlayers();
         UUID player = players[(randomInt(0, players.length, false))].getUniqueId();  // pick player using randomInt and the players list
-        currentVictim = player;
+        currentVictim = Bukkit.getPlayer(player);
         return player;
     }
 
@@ -136,10 +134,11 @@ public class TenJava extends JavaPlugin implements Listener
 
     public void doAction(Action action, Player player) // run a given action on a given player
     {
-        currentVictim = player.getUniqueId();
+        currentVictim = player;
         switch (action)
         {
-            case CREEP_SCARE:
+            /*case CREEP_SCARE:
+                getLogger().info("creepscare");
                 BlockFace[] directions = // possible direction
                 {
                     BlockFace.NORTH,
@@ -148,25 +147,37 @@ public class TenJava extends JavaPlugin implements Listener
                     BlockFace.WEST
                 };
                 BlockFace direction = directions[Math.round(player.getLocation().getYaw()) & 0x3]; // calculate direction
-                break;
+                break;*/
         }
     }
 
-    private BlockFace getOppositeDirection(BlockFace direction)
+    /*private boolean checkDirection(BlockFace direction, BlockFace toCheck)
     {
         switch (direction)
         {
             case NORTH:
-                return BlockFace.SOUTH;
+                if (toCheck == BlockFace.WEST && toCheck == BlockFace.EAST)
+                    return true;
+                else
+                    return false;
             case SOUTH:
-                return BlockFace.NORTH;
+                if (toCheck == BlockFace.WEST && toCheck == BlockFace.EAST)
+                    return true;
+                else
+                    return false;
             case EAST:
-                return BlockFace.WEST;
+                if (toCheck == BlockFace.NORTH && toCheck == BlockFace.SOUTH)
+                    return true;
+                else
+                    return false;
             case WEST:
-                return BlockFace.EAST;
+                if (toCheck == BlockFace.NORTH && toCheck == BlockFace.SOUTH)
+                    return true;
+                else
+                    return false;
 
         }
-        return null;
+        return false;
     }
 
     private BlockFace getDirection(float yaw)
@@ -180,7 +191,7 @@ public class TenJava extends JavaPlugin implements Listener
         };
 
         return directions[Math.round(yaw) & 0x3];
-    }
+    }*/
 
     private void tell(Player p, String message)
     {
@@ -197,8 +208,8 @@ public class TenJava extends JavaPlugin implements Listener
         else if (msg.toLowerCase() == "gravity" || msg.toLowerCase() == "fallingblocks")
             return Action.GRAVITY;
 
-        else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
-            return Action.CREEP_SCARE;
+        /*else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
+            return Action.CREEP_SCARE;*/
 
         else if (msg.toLowerCase() == "diamond" || msg.toLowerCase() == "diamonds" || msg.toLowerCase() == "orefire")
             return Action.GRAVITY;

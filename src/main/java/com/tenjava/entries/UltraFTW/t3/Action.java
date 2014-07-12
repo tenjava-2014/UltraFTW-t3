@@ -16,7 +16,7 @@ public enum Action
     /**
      * Don't look back...
      */
-    CREEP_SCARE,
+    /*CREEP_SCARE,*/
     /**
      * This/these diamond(s) may look pretty smokin', but they're not the only thing that's hot.
      */

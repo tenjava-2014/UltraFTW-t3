@@ -26,4 +26,4 @@ Usage
 -----
 
 1. Drop the .jar in your /plugins/ folder.
-2. Play as your normally would, but be worried. Things are not what they seem.
+2. Play as you normally would, but be worried. Things are not what they seem.

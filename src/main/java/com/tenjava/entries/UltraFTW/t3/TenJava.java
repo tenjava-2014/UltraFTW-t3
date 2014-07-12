@@ -21,9 +21,6 @@ public class TenJava extends JavaPlugin implements Listener
     // saves code/typing
     private String startMessage = "UltraFTW's 2014 ten.java plugin was ";
 
-    // current online players
-    public List<UUID> players = new ArrayList<UUID>();
-
     // amount of game ticks per second, for scheduler
     int ticksPerSec = 20;
 
@@ -49,7 +46,6 @@ public class TenJava extends JavaPlugin implements Listener
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        players.add(event.getPlayer().getUniqueId());
         JavaPlugin plugin = this;
 
         // will run after a random amount of time, and will affect a random player
@@ -70,12 +66,12 @@ public class TenJava extends JavaPlugin implements Listener
         {
             if (args.length == 2)
             {
-
+                // coming up next
             }
 
             else if (args.length == 1)
-                if (!(sender instanceof Player))
-
+                if (!(sender instanceof Player) && getAction(args[0]) != null)
+                    doAction(getAction(args[0]), (Player) sender); // run it on themself. made this for me for testing
 
             return true;
         }
@@ -92,12 +88,6 @@ public class TenJava extends JavaPlugin implements Listener
         {
             // spawn creeper if on certain action
         }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event)
-    {
-        players.remove(event.getPlayer().getUniqueId());
     }
 
     public int pickTime()
@@ -121,7 +111,8 @@ public class TenJava extends JavaPlugin implements Listener
 
     public UUID pickPlayer()
     {
-        UUID player = players.get(randomInt(0, players.size(), false));  // pick player using randomInt and the players list
+        Player[] players = Bukkit.getOnlinePlayers();
+        UUID player = players[(randomInt(0, players.length, false))].getUniqueId();  // pick player using randomInt and the players list
         currentVictim = player;
         return player;
     }
@@ -185,8 +176,23 @@ public class TenJava extends JavaPlugin implements Listener
         p.sendMessage(ChatColor.GOLD + "[LOR] " + ChatColor.GRAY + message);
     }
 
-    public void getAction(String msg)
+    public Action getAction(String msg)
     {
-        //
+        // I hate Java's switch statement
+
+        if (msg.toLowerCase() == "lightning" || msg.toLowerCase() == "storm")
+            return Action.LIGHTNING;
+
+        else if (msg.toLowerCase() == "gravity" || msg.toLowerCase() == "fallingblocks")
+            return Action.GRAVITY;
+
+        else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
+            return Action.CREEP_SCARE;
+
+        else if (msg.toLowerCase() == "diamond" || msg.toLowerCase() == "diamonds" || msg.toLowerCase() == "orefire")
+            return Action.GRAVITY;
+
+        else
+            return null;
     }
 }

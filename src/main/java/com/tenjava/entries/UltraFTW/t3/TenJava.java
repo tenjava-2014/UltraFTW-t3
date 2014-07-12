@@ -1,7 +1,10 @@
 package com.tenjava.entries.UltraFTW.t3;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,6 +61,25 @@ public class TenJava extends JavaPlugin implements Listener
                 doAction(pickAction(), Bukkit.getPlayer(pickPlayer())); // run the action
             }
         }.runTaskLater(this, pickTime()); // run the action on the player after a random amount of time
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
+        if (cmd.getName().equalsIgnoreCase("lor") || cmd.getName().equalsIgnoreCase("lackofrepitition"))
+        {
+            if (args.length == 2)
+            {
+
+            }
+
+            else if (args.length == 1)
+                if (!(sender instanceof Player))
+
+
+            return true;
+        }
+        return false;
     }
 
     @EventHandler
@@ -156,5 +178,15 @@ public class TenJava extends JavaPlugin implements Listener
         };
 
         return directions[Math.round(yaw) & 0x3];
+    }
+
+    private void tell(Player p, String message)
+    {
+        p.sendMessage(ChatColor.GOLD + "[LOR] " + ChatColor.GRAY + message);
+    }
+
+    public void getAction(String msg)
+    {
+        //
     }
 }

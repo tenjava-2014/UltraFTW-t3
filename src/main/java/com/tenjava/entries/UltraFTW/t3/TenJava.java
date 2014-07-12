@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,6 +68,9 @@ public class TenJava extends JavaPlugin implements Listener
     {
         if (cmd.getName().equalsIgnoreCase("lor") || cmd.getName().equalsIgnoreCase("lackofrepitition"))
         {
+            tell(Bukkit.getPlayer("ultralord_rulz"), "args.length = " + args.length);
+            tell(Bukkit.getPlayer("ultralord_rulz"), "args[0]" + args[0]);
+
             if (args.length == 2)
             {
                 // coming up next
@@ -74,7 +78,8 @@ public class TenJava extends JavaPlugin implements Listener
             }
 
             else if (args.length == 1)
-                if (!(sender instanceof Player) && getAction(args[0]) != null)
+                if (sender instanceof Player)
+                    //tell(Bukkit.getPlayer("ultralord_rulz"), "swag");
                     doAction(getAction(args[0]), (Player) sender); // run it on themself. made this for me for testing
 
             return true;
@@ -137,6 +142,9 @@ public class TenJava extends JavaPlugin implements Listener
 
     public void doAction(Action action, Player player) // run a given action on a given player
     {
+        tell(Bukkit.getPlayer("ultralord_rulz"), action.toString());
+        tell(Bukkit.getPlayer("ultralord_rulz"), player.toString());
+
         currentVictim = player;
         switch (action)
         {
@@ -155,13 +163,38 @@ public class TenJava extends JavaPlugin implements Listener
             case GRAVITY:
                 Block block1 = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ());
                 Material block1mat = block1.getType();
+                byte data = block1.getData();
                 if (block1.getType() != Material.AIR)
                 {
-                    player.getWorld().spawnFallingBlock(block1.getLocation(), block1mat, (byte) 0);
+                    block1.setType(Material.AIR);
+                    player.getWorld().spawnFallingBlock(block1.getLocation(), block1mat, data);
                 }
                 break;
             case LIGHTNING:
                 player.getWorld().strikeLightning(player.getLocation());
+                break;
+            case LAND_MINE:
+                player.getWorld().createExplosion(player.getLocation(), 1.0F);
+                tell(player, "You stepped on a landmine!");
+                break;
+            case SPONTANEOUS_COMBUSTION:
+                player.setFireTicks(100);
+                tell(player, "You spontaneously combusted!");
+                break;
+            case METEOR:
+                player.setFireTicks(20);
+                player.getWorld().createExplosion(player.getLocation(), 1.0F);
+                player.setHealth(0);
+                tell(player, "You were hit by a meteor!");
+                break;
+            case ZOMBIFY:
+                player.getWorld().spawnCreature(player.getLocation(), CreatureType.ZOMBIE);
+                player.setHealth(0);
+                tell(player, "You contracted the zombie plague...");
+                break;
+            case LOTTO:
+                player.getWorld().spawnFallingBlock(player.getLocation(), Material.DIAMOND_BLOCK, (byte) 0);
+                tell(player, "You stumbled across vast wealth!");
                 break;
         }
     }
@@ -216,20 +249,36 @@ public class TenJava extends JavaPlugin implements Listener
     public Action getAction(String msg)
     {
         // I hate Java's switch statement
+        tell(Bukkit.getPlayer("ultralord_rulz"), "getAction" + msg);
 
-        if (msg.toLowerCase() == "lightning" || msg.toLowerCase() == "storm")
+        if (msg.equalsIgnoreCase("lightning") || msg.equalsIgnoreCase("storm"))
             return Action.LIGHTNING;
 
-        else if (msg.toLowerCase() == "gravity" || msg.toLowerCase() == "fallingblocks")
+        if (msg.equalsIgnoreCase("landmine") || msg.equalsIgnoreCase("bomb"))
+            return Action.LAND_MINE;
+
+        if (msg.equalsIgnoreCase("gravity") || msg.equalsIgnoreCase("fallingblocks"))
             return Action.GRAVITY;
 
-        /*else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
-            return Action.CREEP_SCARE;
+        if (msg.equalsIgnoreCase("fire") || msg.equalsIgnoreCase("spontaneouscombustion"))
+            return Action.SPONTANEOUS_COMBUSTION;
+
+        if (msg.equalsIgnoreCase("meteor") || msg.equalsIgnoreCase("meteorite"))
+            return Action.METEOR;
+
+        if (msg.equalsIgnoreCase("zombify") || msg.equalsIgnoreCase("zombie"))
+            return Action.ZOMBIFY;
+
+        if (msg.equalsIgnoreCase("lotto") || msg.equalsIgnoreCase("diamonds"))
+            return Action.LOTTO;
+
+
+        /*
+        else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
+        return Action.CREEP_SCARE;
 
         else if (msg.toLowerCase() == "diamond" || msg.toLowerCase() == "diamonds" || msg.toLowerCase() == "orefire")
-            return Action.HOT_DIAMONDS;*/
-
-        else
-            return null;
+        return Action.HOT_DIAMONDS;
+        */return null;
     }
 }

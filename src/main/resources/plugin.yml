@@ -1,3 +1,9 @@
 name: Lack of Repetition
 main: com.tenjava.entries.UltraFTW.t3.TenJava
 version: '${project.version}'
+commands:
+    lor:
+        description: The main command for the plugin.
+        usage: /<command> [subcommand/action] [args]
+        permission: lor.use
+        permission-message: You don't have permission!

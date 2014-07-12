@@ -67,6 +67,7 @@ public class TenJava extends JavaPlugin implements Listener
             if (args.length == 2)
             {
                 // coming up next
+
             }
 
             else if (args.length == 1)
@@ -84,9 +85,18 @@ public class TenJava extends JavaPlugin implements Listener
         BlockFace direction = getDirection(event.getPlayer().getLocation().getYaw());
         BlockFace opposite = getOppositeDirection(direction);
 
-        if (event.getPlayer().getUniqueId().equals(currentVictim) && getDirection(event.getPlayer().getLocation().getYaw()).equals(opposite))
+        tell(event.getPlayer(), direction.toString());
+        tell(event.getPlayer(), opposite.toString());
+        tell(event.getPlayer(), event.getPlayer().getUniqueId().toString());
+        tell(event.getPlayer(), currentVictim.toString());
+
+
+
+
+        if (event.getPlayer().getUniqueId().equals(currentVictim) && direction.equals(opposite))
         {
             // spawn creeper if on certain action
+            tell(event.getPlayer(), "hello");
         }
     }
 
@@ -126,6 +136,7 @@ public class TenJava extends JavaPlugin implements Listener
 
     public void doAction(Action action, Player player) // run a given action on a given player
     {
+        currentVictim = player.getUniqueId();
         switch (action)
         {
             case CREEP_SCARE:

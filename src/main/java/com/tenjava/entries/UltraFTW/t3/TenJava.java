@@ -1,10 +1,12 @@
 package com.tenjava.entries.UltraFTW.t3;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -55,7 +57,13 @@ public class TenJava extends JavaPlugin implements Listener
                 Action action = pickAction();
 
             }
-        }.runTaskLater(this, pickTime());
+        }.runTaskLater(this, pickTime()); // run the action on the player after a random amount of time
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event)
+    {
+        // will run when player changes yaw
     }
 
     @EventHandler
@@ -93,5 +101,22 @@ public class TenJava extends JavaPlugin implements Listener
         List<Action> actions = Collections.unmodifiableList(Arrays.asList(com.tenjava.entries.UltraFTW.t3.Action.values()));
         Random rand = new Random();
         return actions.get(rand.nextInt(actions.size()));
+    }
+
+    public void doAction(Action action, Player player)
+    {
+        switch (action)
+        {
+            case CREEP_SCARE:
+                BlockFace[] directions = // possible direction
+                {
+                    BlockFace.NORTH,
+                    BlockFace.EAST,
+                    BlockFace.SOUTH,
+                    BlockFace.WEST,
+                };
+                BlockFace direction = directions[Math.round(player.getLocation().getYaw()) & 0x3]; // calculate direction
+                break;
+        }
     }
 }

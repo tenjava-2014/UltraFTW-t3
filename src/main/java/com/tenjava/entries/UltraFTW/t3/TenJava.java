@@ -1,6 +1,7 @@
 package com.tenjava.entries.UltraFTW.t3;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -15,7 +16,7 @@ public class TenJava extends JavaPlugin implements Listener
     // saves code/typing
     private String startMessage = "UltraFTW's 2014 ten.java plugin was ";
 
-    // current online players (NOT CONTINUALLY UPDATED; THIS UPDATED WHEN IT PLEASES)
+    // current online players
     public List<UUID> players = new ArrayList<UUID>();
 
     // amount of game ticks per second, for scheduler
@@ -50,9 +51,8 @@ public class TenJava extends JavaPlugin implements Listener
             public void run()
             {
                 // do cool stuff
-                UUID player = pickPlayer();
-                if (Bukkit.getPlayer(player) == null)
-                    players.remove(player);
+                Player player = Bukkit.getPlayer(pickPlayer());
+
             }
         }.runTaskLater(this, pickTime());
     }
@@ -60,7 +60,7 @@ public class TenJava extends JavaPlugin implements Listener
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event)
     {
-        // stuff, but I gotta commit first
+        players.remove(event.getPlayer().getUniqueId());
     }
 
     public int pickTime()

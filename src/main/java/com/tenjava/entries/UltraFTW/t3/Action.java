@@ -1,10 +1,5 @@
 package com.tenjava.entries.UltraFTW.t3;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Represents a random event/action that can happen to a player.
  */

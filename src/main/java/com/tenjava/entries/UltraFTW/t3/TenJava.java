@@ -2,6 +2,9 @@ package com.tenjava.entries.UltraFTW.t3;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -148,6 +151,18 @@ public class TenJava extends JavaPlugin implements Listener
                 };
                 BlockFace direction = directions[Math.round(player.getLocation().getYaw()) & 0x3]; // calculate direction
                 break;*/
+
+            case GRAVITY:
+                Block block1 = player.getWorld().getBlockAt(player.getLocation().getBlockX(), player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ());
+                Material block1mat = block1.getType();
+                if (block1.getType() != Material.AIR)
+                {
+                    player.getWorld().spawnFallingBlock(block1.getLocation(), block1mat, (byte) 0);
+                }
+                break;
+            case LIGHTNING:
+                player.getWorld().strikeLightning(player.getLocation());
+                break;
         }
     }
 
@@ -209,10 +224,10 @@ public class TenJava extends JavaPlugin implements Listener
             return Action.GRAVITY;
 
         /*else if (msg.toLowerCase() == "jumpscare" || msg.toLowerCase() == "creeper")
-            return Action.CREEP_SCARE;*/
+            return Action.CREEP_SCARE;
 
         else if (msg.toLowerCase() == "diamond" || msg.toLowerCase() == "diamonds" || msg.toLowerCase() == "orefire")
-            return Action.GRAVITY;
+            return Action.HOT_DIAMONDS;*/
 
         else
             return null;

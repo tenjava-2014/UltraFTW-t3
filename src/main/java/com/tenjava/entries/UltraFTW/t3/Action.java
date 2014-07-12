@@ -20,5 +20,5 @@ public enum Action
     /**
      * This/these diamond(s) may look pretty smokin', but they're not the only thing that's hot.
      */
-    HOT_DIAMONDS
+    /*HOT_DIAMONDS*/
 }

@@ -2,27 +2,33 @@ package com.tenjava.entries.UltraFTW.t3;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 
 public class TenJava extends JavaPlugin implements Listener
 {
     // saves code/typing
     private String startMessage = "UltraFTW's 2014 ten.java plugin was ";
-    private List players = new ArrayList();
+
+    // current online players (NOT CONTINUALLY UPDATED; THIS UPDATED WHEN IT PLEASES)
+    public List players = new ArrayList();
+
+    // amount of game ticks per second, for scheduler
+    int ticksPerSec = 20;
+
+    // amount of seconds per minute
+    int secsPerMin = 60;
 
     @Override
     public void onEnable()
     {
         getLogger().info(startMessage + "enabled!");
-
-        //for ()
     }
 
     @Override
@@ -32,25 +38,31 @@ public class TenJava extends JavaPlugin implements Listener
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event)
+    public void onPlayerJoin(PlayerJoinEvent event)
     {
+        players.add(event.getPlayer().getUniqueId());
+        JavaPlugin plugin = this;
 
+        new BukkitRunnable()
+        {
+            @Override
+            public void run()
+            {
+                // do cool stuff
+            }
+        }.runTaskLater(this, pickTime());
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event)
+    public int pickTime()
     {
-        playerleave(event.getPlayer().getUniqueId());
-    }
+        Random random = new Random();
+        int randTime = random.nextInt();
 
-    @EventHandler
-    public void onPlayerKicked(PlayerKickEvent event)
-    {
-        playerleave(event.getPlayer().getUniqueId());
-    }
+        int ticksPerMin = secsPerMin*ticksPerSec;
 
-    private void playerleave(UUID player)
-    {
+        int min = 3*ticksPerMin;
+        int max = 25*ticksPerMin;
 
+        return new Random().nextInt(max - min + 1) + min;
     }
 }

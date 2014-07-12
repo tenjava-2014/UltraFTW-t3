@@ -52,6 +52,7 @@ public class TenJava extends JavaPlugin implements Listener
             {
                 // do cool stuff
                 Player player = Bukkit.getPlayer(pickPlayer());
+                Action action = pickAction();
 
             }
         }.runTaskLater(this, pickTime());
@@ -74,7 +75,6 @@ public class TenJava extends JavaPlugin implements Listener
 
     private int randomInt(int min, int max, boolean inclusive)
     {
-        Random random = new Random();
         int include = 0; // cheesy way of making inclusive work with least amount of code
 
         if (inclusive)
